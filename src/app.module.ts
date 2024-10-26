@@ -14,16 +14,15 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot(),
     SequelizeModule.forRoot({
-      autoLoadModels: true, // Carregar automaticamente os models
-      synchronize: true, // Sincronizar o schema com o banco de dados
-
+      autoLoadModels: true,
+      synchronize: true,
       dialect: 'mysql',
-      host: process.env.DB_HOST, // Definido no .env
-      port: Number(process.env.DB_PORT), // Definido no .env
-      username: process.env.DB_USERNAME, // Definido no .env
-      password: process.env.DB_PASSWORD, // Definido no .env
-      database: process.env.DB_DATABASE_NAME, // Nome do banco de dados no .env
-      sync: { alter: true }, // Sincronizar com possíveis alterações na estrutura
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
+      sync: { alter: true },
     }),
     AuthModule,
     UsersModule,

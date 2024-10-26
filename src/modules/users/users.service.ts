@@ -13,7 +13,6 @@ export class UsersService {
     if (loginAlreadyExists) {
       throw new HttpException('Login já existe', HttpStatus.CONFLICT);
     }
-    console.log({ loginAlreadyExists });
     const user = await this.userModel.create({ ...createUserDto });
     return user.dataValues;
   }

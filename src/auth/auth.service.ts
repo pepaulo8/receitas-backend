@@ -12,9 +12,7 @@ export class AuthService {
 
   async validateUser(login: string, senha: string) {
     const user = await this.usersService.findByLogin(login);
-    console.log({ user });
     if (user && user.senha === senha) {
-      console.log(true);
       return user; // Retorna o usuário se as credenciais estiverem corretas
     }
     throw new UnauthorizedException('Invalid login or password');

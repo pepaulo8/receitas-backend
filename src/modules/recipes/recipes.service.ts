@@ -14,27 +14,22 @@ export class RecipesService {
     return recipe;
   }
   async findAll(req: any, filter?: string) {
-    console.log({ user: req.user });
     const whereCondition = filter
       ? {
           [Op.or]: [
             {
               nome: {
                 [Op.like]: `%${filter}%`,
-                // Aqui, a collation deve ser aplicada no seu modelo Recipe para ignorar acentuação
-                // collate: 'utf8mb4_general_ci',
               },
             },
             {
               modo_preparo: {
                 [Op.like]: `%${filter}%`,
-                // collate: 'utf8mb4_general_ci',
               },
             },
             {
               ingredientes: {
                 [Op.like]: `%${filter}%`,
-                // collate: 'utf8mb4_general_ci',
               },
             },
           ],
@@ -55,14 +50,14 @@ export class RecipesService {
   }
 
   async update(id: number, updateRecipeDto: UpdateRecipeDto) {
-    const recipe = await this.findOne(id); // Verifica se a receita existe
-    await recipe.update(updateRecipeDto); // Atualiza com os novos dados
+    const recipe = await this.findOne(id);
+    await recipe.update(updateRecipeDto);
     return recipe;
   }
 
   async remove(id: number) {
-    const recipe = await this.findOne(id); // Verifica se a receita existe
-    await recipe.destroy(); // Remove a receita
+    const recipe = await this.findOne(id);
+    await recipe.destroy();
     return { message: `Recipe with id ${id} removed successfully` };
   }
 }
