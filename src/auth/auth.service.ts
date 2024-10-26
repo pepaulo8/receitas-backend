@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { UsersService } from '@/modules/users/users.service';
+import { compareSync } from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +13,10 @@ export class AuthService {
 
   async validateUser(login: string, senha: string) {
     const user = await this.usersService.findByLogin(login);
-    if (user && user.senha === senha) {
-      return user; // Retorna o usuário se as credenciais estiverem corretas
+    if (user && !compareSync(senha, user.senha)) {
+      throw new UnauthorizedException('Invalid login or password');
     }
-    throw new UnauthorizedException('Invalid login or password');
+    return user;
   }
 
   async login(loginAuthDto: LoginAuthDto) {

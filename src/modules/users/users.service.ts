@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { genSaltSync, hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,13 @@ export class UsersService {
     if (loginAlreadyExists) {
       throw new HttpException('Login já existe', HttpStatus.CONFLICT);
     }
-    const user = await this.userModel.create({ ...createUserDto });
+
+    const salt = genSaltSync(10);
+    const hashedPassword = hashSync(createUserDto.senha, salt);
+    const user = await this.userModel.create({
+      ...createUserDto,
+      senha: hashedPassword,
+    });
     return user.dataValues;
   }
 
